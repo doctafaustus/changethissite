@@ -16,7 +16,7 @@ var dbOptions = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 300
 if (!process.env.PORT) {
 	mongoose.connect('mongodb://localhost/site');
 } else {
-	console.log("Application running in Heroku");
+	console.log("Application running in Heroku!");
 	var mongodbUri = process.env.MONGOLAB_URI; // A Heroku config variable
 	var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 	console.log(mongooseUri);
