@@ -47,7 +47,7 @@ app.locals.pretty = true;
 app.use(express.static('public'));
 //app.use(favicon(__dirname + '/public/bypass/favicon.ico'));
 app.listen(port, function(req, res) {
-	console.log('App listening on port 3000');
+	console.log('App listening on port 3000!!');
 });
 
 
