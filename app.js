@@ -10,6 +10,9 @@ var request = require('request');
 /* DATABASE */
 var Schema = mongoose.Schema; // allows use to define our schema
 var ObjectId = Schema.ObjectId;
+// Database Options
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
+	replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
 // Connect to MongoDB
 if (!process.env.PORT) {
 	mongoose.connect('mongodb://localhost/site');
