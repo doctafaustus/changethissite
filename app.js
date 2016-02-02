@@ -19,6 +19,7 @@ if (!process.env.PORT) {
 	console.log("Application running in Heroku!");
 	var mongodbUri = process.env.MONGOLAB_URI; // A Heroku config variable
 	var mongooseUri = uriUtil.formatMongoose(mongodbUri);
+	console.log(mongodbUri);
 	console.log(mongooseUri);
 	mongoose.connect(mongooseUri, dbOptions);
 }
