@@ -19,6 +19,7 @@ if (!process.env.PORT) {
 	console.log("Application running in Heroku");
 	var mongodbUri = process.env.MONGOLAB_URI; // A Heroku config variable
 	var mongooseUri = uriUtil.formatMongoose(mongodbUri);
+	console.log(mongooseUri);
 	mongoose.connect(mongooseUri, dbOptions);
 }
 // Contact is a mongoose model (meaning it represents a user in the database). Then specify a schema, which is how the data is going to be represented in the db. List the fields and what type of value they are. The id is the value that MongoDB provides us.
