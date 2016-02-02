@@ -1,0 +1,395 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Amaranth:400,700' rel='stylesheet' type='text/css'>
+	<style>
+		html, body { 
+			height: 100%;
+			overflow: hidden;
+			padding: 0;
+			margin: 0;
+			font-family: sans-serif;
+		}
+		iframe {
+			overflow: hidden;
+			width: 100%;
+			height: 100%;
+		}
+		header {
+			padding: 15px 21px;
+			overflow: auto;
+			background: url(https://resources1.okadirect.com/assets/img/background/header-bg.png) repeat-x;
+			border-bottom: solid 4px #12A6A4;
+		}
+		h1, h2, h3 {
+			margin: 0;
+			color: #12a6a4;
+			font-family: 'Amaranth', sans-serif;
+		}
+		h1 {
+			font-weight: 200;
+			font-size: 27px;
+		}
+		#header-left {
+			width: 50%;
+			float: left;
+		}
+		#header-right {
+			width: 50%;
+			float: right;
+			text-align: right;
+		}
+		#logo-text {
+			margin-bottom: 10px;
+		}
+		#logo-text a {
+			text-decoration: none;
+			color: #12a6a4;
+		}
+		#logo {
+			width: 34px;
+			margin-left: 12px;
+		}
+		#new-site-url {
+			border: solid 1px #12a6a4;
+			height: 20px;
+			font-size: 15px;
+		}
+		#site-submit {
+			-webkit-appearance: none;
+			border: 0;
+			color: white;
+			background-color: #12A6A4;
+			padding: 5px;
+		}
+		#site-submit:hover {
+			background-color: #15bcba;
+		}
+		#info-icon {
+			margin-right: 5px;
+			cursor: pointer
+		}
+		#current-site-title {
+			display: inline-block;
+			margin-top: 19px;
+			margin-bottom: 12px;
+		}
+		#site-history {
+			display: block;
+			color: black;
+			font-size: 15px;
+		}
+		#site-history:hover {
+			color: #12a6a4;
+		}
+		#modal-check {
+			display: none;
+			position: fixed;
+			z-index: 2000;
+			background-color: white;
+			top: 25%;
+			border: 10px solid #12a6a4;
+			padding: 15px 20px;
+			left: 0;
+			right: 0;
+			margin-left: auto;
+			margin-right: auto;
+			width: 560px;
+		}
+		#modal-check-x {
+			cursor: pointer;
+			float: right;
+			margin-right: -10px;
+			margin-top: -6px;
+			display: block;
+		}
+		#submit-site, #pay, #customButton {
+			border: 0;
+			background-color: #12a6a4;
+			color: white;
+			padding: 10px;
+			font-weight: 500;
+			font-size: 1.05em;
+			margin: 0 auto;
+			margin-top: 5px;
+			display: block;
+			margin-bottom: 10px;
+		}
+		#submit-site:hover {
+			background-color: #15bcba;
+		}
+		#site-history-dropdown {
+			display: none;
+			border: solid 1px black;
+			background-color: white;
+			width: 270px;
+			float: right;
+			padding: 10px;
+			margin: 0 auto;
+			border-top: none;
+			position: fixed;
+			right: 0;
+		}
+		#site-history-dropdown a {
+			text-decoration: underline;
+			color: #12a6a4;
+		}
+		#site-history-dropdown a:hover {
+			text-decoration: none;
+			color: black;
+		}
+		table th {
+			text-align: left;
+		}
+		.t-left {
+			width: 162px;
+			padding-right: 15px;
+			float: left;
+		}
+		.t-right {
+			float: right;
+		}
+		#final-confirmation {
+			display: none;
+			margin-top: 30px;
+		}
+		#payment {
+			display: none;
+			text-align: center;
+		}
+		#customButton {
+			margin: 33px auto;
+			margin-bottom: 10px;
+		}
+		#stripe-form {
+			display: none;
+		}
+		#info-modal {
+			display: none;
+		    text-align: center;
+		    border: solid 2px #12A6A4;
+		    padding: 10px;
+		    font-size: .9em;
+		    width: 276px;
+			position: absolute;
+			right: 8px;
+			top: 118px;
+			z-index: 100;
+			background-color: white;
+		}
+		#info-modal p {
+			margin: 0;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src='https://checkout.stripe.com/checkout.js'></script>
+	<script src="moment.js"></script>
+</head>
+<body>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+	<header>
+		<div id="header-left">
+			<h1 id="logo-text"><a href="/">Change This Site</a><img id="logo" src="logo.png"></h1>
+			<form id="new-site-form" action="/site" method="POST">
+				<input type="text" id="new-site-url" name="site" placeholder="Enter a website!">
+				<input type="submit" id="site-submit" value="Change">
+			</form>
+		</div>
+		<div id="header-right">
+			<div id="info-modal">
+				<p>
+					Someone changed this site to <span id="info-modal-site"></span>. To change this site again, enter a URL into the form and click "Change"
+				</p>
+			</div>
+			<img id="info-icon" src="info.png">
+			<h3 id='current-site-title'></h3>
+			<a href="#" id="site-history">Site Change History</a>
+		</div>
+	</header>
+	<div id="site-history-dropdown">
+		<table>
+			<tr>
+				<th>Site</th>
+				<th>Reign</th>
+			</tr>
+			<tr>
+				<td>http://www.cnn.com</td>
+				<td>3 hours</td>
+			</tr>
+		</table>
+	</div>
+	<div id="modal-check">
+		<img id="modal-check-x" src="x.jpg">
+		<div id="modal-inner">
+			<div id="modal-1">
+				<h2>See the change?</h2>
+				<p>
+					You've changed this website! Currently, this change is only visible to you but you can show the rest of the world for $5. Your website will stay up until the next person changes this site!
+				</p>
+				<button id="submit-site">Show The World!</button>
+			</div>
+			<div id="final-confirmation">
+				<p>
+					Your site will show up exactly as it does now. Make sure it has rendered correctly before proceeding to payment.
+				</p>
+				<button id="pay">Proceed to Payment</button>
+			</div>
+		</div>
+		<div id="payment">
+			<h2>Secure Payment by Stripe</h2>
+			<button id="customButton">Pay with Card</button>
+		</div>
+	</div>
+
+	</div>
+	<iframe frameborder="0" src="<%= site %>"></iframe>
+	<script>
+		$(document).ready(function() {
+			var siteToChange = "";
+
+			// Get site change history records
+			$.ajax({
+				type: "GET",
+				url: "/history",
+				success: function(data) {
+					var sites = data;
+					var table = "<table><tr><th class='t-left'>Site</th><th class='t-right'>Changed</th></tr>";
+					for (i = 0; i < sites.length; i++) {
+						var site = sites[i].site;
+						site = site.substring(site.indexOf(".") + 1);
+						table += "<tr><td class='t-left'><a href='" + sites[i].site + "' target='_blank'>" + site + "</a></td><td class='t-right'>" + moment(sites[i].creationDate).startOf('hour').fromNow() + "</td></tr>";
+					}	
+					table += "</table>";
+
+					$("#site-history-dropdown").html(table);
+				}
+			});
+
+
+
+
+			function isUrlValid(url) {
+			    return /^(http?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+			}
+
+			$("#new-site-form").submit(function(e) {
+				e.preventDefault();
+				var submittedSite = $("#new-site-url").val();
+
+				if (isUrlValid(submittedSite)) {
+					$.ajax({
+						type: "POST",
+						url: "/test",
+						data: $("#new-site-form").serialize(),
+						success: function() {
+							$("iframe").attr("src", submittedSite);
+							siteToChange = $("#new-site-url").val();
+
+							setTimeout(function() {
+								$("#modal-check").fadeIn();
+								var handler = StripeCheckout.configure({
+									key: 'pk_test_O0FEQP9GGDl3xL8erfEK9LxX',
+									image: 'logo.png',
+									locale: 'auto',
+									token: function(token) {
+										$.ajax({
+											url: '/charge',
+											type: 'POST',
+											data: {
+										    	stripeToken: token.id,
+												site: siteToChange
+										    },
+											// Node is throwing an error when using "res.render" after payment success for some reason. As a workaround, I'll set the redirect on the charge post success.
+											success: function() {
+												window.location = "/confirm";
+											}
+										 });
+									// Use the token to create the charge with a server-side script.
+									// You can access the token ID with `token.id`
+									}
+								});
+
+								$('#customButton').on('click', function(e) {
+									// Open Checkout with further options
+									handler.open({
+										name: 'ChangeThisSite.com',
+										description: '1 site change',
+										amount: 500
+									});
+									e.preventDefault();
+								});
+
+								// Close Checkout on page navigation
+								$(window).on('popstate', function() {
+									handler.close();
+								});
+							}, 2500);
+						},
+						error: function() {
+							alert("Sorry! This website has security options that prevent us from using it. Please try another!");
+						}
+					});
+				} else {
+					alert("Site must begin with http://\n\n(https:// not allowed)");
+				}
+
+			});
+
+			$("#modal-check-x").click(function() {
+				$("#modal-check").hide();
+			});
+
+			// Click offscreen close
+			$(document).mouseup(function (e) {
+	    		var container = $("#modal-check");
+	    		if (!container.is(e.target) // if the target of the click isn't the container...
+	        		&& container.has(e.target).length === 0) // ... nor a descendant of the container
+	    		{
+					$("#modal-check").hide();
+	    		}
+			});
+
+			// Populate current site title
+			var currentSiteTitle = $("iframe").attr('src');
+			currentSiteTitle = currentSiteTitle.substring(currentSiteTitle.indexOf(".") + 1);
+			$("#current-site-title").text(currentSiteTitle);
+			$("#info-modal-site").text(currentSiteTitle);
+
+			// Click handler for previously active sites
+			$("#site-history").click(function(e) {
+				e.preventDefault();
+				$("#site-history-dropdown").slideToggle();
+			});
+
+
+			$("#submit-site").click(function(e) {
+				$("#modal-1").fadeOut(500, function() {
+					$("#final-confirmation").fadeIn(500);
+				});
+			});
+
+			$("#pay").click(function(e) {
+				$("#modal-inner").fadeOut(500, function() {
+					$("#payment").fadeIn(500);
+				});
+			});
+
+			$("#purchase").click(function(e) {
+				e.preventDefault();
+				console.log('were')
+				$("#modal-check").hide(function() {
+					$(".stripe-button-el").trigger('click');
+				});
+			});
+
+			$("#info-icon").click(function() {
+				$("#info-modal").fadeToggle();
+			});
+
+			$("#info-modal").click(function() {
+				$(this).fadeOut();
+			});
+		});
+	</script>
+</body>
+</html>
