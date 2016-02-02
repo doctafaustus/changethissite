@@ -1,0 +1,29 @@
+{
+  "name": "changethissite",
+  "version": "1.0.0",
+  "description": "source code for changethissite.com",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "ejs": "^2.3.4",
+    "mongodb-uri": "^0.9.7",
+    "express": "^4.13.3",
+    "mongoose": "^4.3.7",
+    "request": "^2.69.0",
+    "stripe": "^4.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doctafaustus/changethissite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doctafaustus/changethissite/issues"
+  },
+  "homepage": "https://github.com/doctafaustus/changethissite#readme"
+}
