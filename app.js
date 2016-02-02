@@ -10,9 +10,7 @@ var request = require('request');
 /* DATABASE */
 var Schema = mongoose.Schema; // allows use to define our schema
 var ObjectId = Schema.ObjectId;
-// Database Options
-var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
-	replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
+
 // Connect to MongoDB
 if (!process.env.PORT) {
 	mongoose.connect('mongodb://localhost/site');
@@ -20,7 +18,7 @@ if (!process.env.PORT) {
 	console.log("Application running in Heroku");
 	var mongodbUri = process.env.MONGOLAB_URI; // A Heroku config variable
 	var mongooseUri = uriUtil.formatMongoose(mongodbUri);
-	mongoose.connect(mongooseUri, options);
+	mongoose.connect(mongooseUri, { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } });
 }
 // Contact is a mongoose model (meaning it represents a user in the database). Then specify a schema, which is how the data is going to be represented in the db. List the fields and what type of value they are. The id is the value that MongoDB provides us.
 var Site = mongoose.model('Site', new Schema({
