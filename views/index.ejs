@@ -254,7 +254,12 @@
 					var table = "<table><tr><th class='t-left'>Site</th><th class='t-right'>Changed</th></tr>";
 					for (i = 0; i < sites.length; i++) {
 						var site = sites[i].site;
-						site = site.substring(site.indexOf(".") + 1);
+                        if (site.indexOf("http://") !== -1) {
+                            site = site.substring(site.indexOf("http://") + 7);
+                        }
+                        if (site.indexOf("www.") !== -1) {
+                            site = site.substring(site.indexOf("www.") + 4);
+                        }
 						table += "<tr><td class='t-left'><a href='" + sites[i].site + "' target='_blank'>" + site + "</a></td><td class='t-right'>" + moment(sites[i].creationDate).startOf('hour').fromNow() + "</td></tr>";
 					}	
 					table += "</table>";
