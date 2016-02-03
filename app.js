@@ -6,6 +6,7 @@ var url = require("url");
 var mongoose = require('mongoose');
 var uriUtil = require('mongodb-uri');
 var request = require('request');
+var favicon = require('serve-favicon');
 
 // DATABASE
 var Schema = mongoose.Schema; // allows use to define our schema
@@ -46,7 +47,7 @@ var app = express();
 app.set('view engine', 'ejs');
 app.locals.pretty = true;
 app.use(express.static('public'));
-//app.use(favicon(__dirname + '/public/bypass/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.listen(port, function(req, res) {
 	console.log('App listening on port 3000!!');
 });
