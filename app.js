@@ -129,6 +129,8 @@ app.post('/charge', function(req, res) {
 	var stripeToken = req.body.stripeToken;
 	var site = req.body.site;
 
+    console.log(req.body);
+
 	console.log("Submitted Site: " + site);
 
 	var charge = stripe.charges.create({
@@ -136,6 +138,7 @@ app.post('/charge', function(req, res) {
 		currency: "usd",
 		source: stripeToken,
 		description: "Site change purchase",
+        receipt_email: req.body.email,
 		metadata: {
 			site: req.body.site,
 		}
