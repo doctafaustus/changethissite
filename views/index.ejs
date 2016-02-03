@@ -319,9 +319,14 @@
 
 			// Populate current site title
 			var currentSiteTitle = $("iframe").attr('src');
-			currentSiteTitle = currentSiteTitle.substring(currentSiteTitle.indexOf(".") + 1);
-			$("#current-site-title").text(currentSiteTitle);
-			$("#info-modal-site").text(currentSiteTitle);
+            if (currentSiteTitle.indexOf("http://") !== -1) {
+                currentSiteTitle = currentSiteTitle.substring(currentSiteTitle.indexOf("http://") + 7);
+            }
+            if (currentSiteTitle.indexOf("www.") !== -1) {
+                currentSiteTitle = currentSiteTitle.substring(currentSiteTitle.indexOf("www.") + 4);
+            }
+            $("#current-site-title").text(currentSiteTitle);
+            $("#info-modal-site").text(currentSiteTitle);
 
 			// Click handler for previously active sites
 			$("#site-history").click(function(e) {
