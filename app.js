@@ -134,7 +134,7 @@ app.post('/charge', function(req, res) {
 	console.log("Submitted Site: " + site);
 
 	var charge = stripe.charges.create({
-		amount: 100, // amount in cents, again
+		amount: 500, // amount in cents, again
 		currency: "usd",
 		source: stripeToken,
 		description: "Site change purchase",
