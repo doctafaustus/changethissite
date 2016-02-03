@@ -32,7 +32,7 @@ var Site = mongoose.model('Site', new Schema({
 
 
 // Stripe
-// Test CC: 4242424242424242
+// Test Credit Card #: 4242424242424242
 var stripePrivateKey = process.env.PK || "sk_test_M6Kl75IVrABORGexEGZjt740";
 var stripe = require("stripe")(stripePrivateKey);
 
