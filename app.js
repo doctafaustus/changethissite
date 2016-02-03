@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var uriUtil = require('mongodb-uri');
 var request = require('request');
 
-/* DATABASE */
+// DATABASE
 var Schema = mongoose.Schema; // allows use to define our schema
 var ObjectId = Schema.ObjectId;
 // Database Options
