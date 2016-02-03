@@ -151,7 +151,6 @@
 		}
 		#final-confirmation {
 			display: none;
-			margin-top: 30px;
 		}
 		#payment {
 			display: none;
@@ -229,20 +228,17 @@
 				<button id="submit-site">Show The World!</button>
 			</div>
 			<div id="final-confirmation">
+			<h2>Secure Payment by Stripe</h2>
 				<p>
 					Your site will show up exactly as it does now. Make sure it has rendered correctly before proceeding to payment.
 				</p>
-				<button id="pay">Proceed to Payment</button>
+				<button id="customButton">Pay with Card</button>
 			</div>
-		</div>
-		<div id="payment">
-			<h2>Secure Payment by Stripe</h2>
-			<button id="customButton">Pay with Card</button>
 		</div>
 	</div>
 
 	</div>
-	<iframe frameborder="0" src="<%= site || www.cnn.com %>"></iframe>
+	<iframe id='main-iframe' frameborder="0" src="<%= site || www.cnn.com %>"></iframe>
 	<script>
 		$(document).ready(function() {
 			var siteToChange = "";
@@ -282,47 +278,17 @@
 						url: "/test",
 						data: $("#new-site-form").serialize(),
 						success: function() {
-							$("iframe").attr("src", submittedSite);
+							$("#main-iframe").attr("src", submittedSite);
 							siteToChange = $("#new-site-url").val();
 
 							setTimeout(function() {
+								$("#final-confirmation").hide();
+
 								$("#modal-check").fadeIn();
-								var handler = StripeCheckout.configure({
-									key: 'pk_test_O0FEQP9GGDl3xL8erfEK9LxX',
-									image: 'logo.png',
-									locale: 'auto',
-									token: function(token) {
-										$.ajax({
-											url: '/charge',
-											type: 'POST',
-											data: {
-										    	stripeToken: token.id,
-												site: siteToChange
-										    },
-											// Node is throwing an error when using "res.render" after payment success for some reason. As a workaround, I'll set the redirect on the charge post success.
-											success: function() {
-												window.location = "/confirm";
-											}
-										 });
-									// Use the token to create the charge with a server-side script.
-									// You can access the token ID with `token.id`
-									}
-								});
+								$("#modal-inner").show();
+								$("#modal-1").show();
 
-								$('#customButton').on('click', function(e) {
-									// Open Checkout with further options
-									handler.open({
-										name: 'ChangeThisSite.com',
-										description: '1 site change',
-										amount: 500
-									});
-									e.preventDefault();
-								});
-
-								// Close Checkout on page navigation
-								$(window).on('popstate', function() {
-									handler.close();
-								});
+	
 							}, 2500);
 						},
 						error: function() {
@@ -368,19 +334,6 @@
 				});
 			});
 
-			$("#pay").click(function(e) {
-				$("#modal-inner").fadeOut(500, function() {
-					$("#payment").fadeIn(500);
-				});
-			});
-
-			$("#purchase").click(function(e) {
-				e.preventDefault();
-				console.log('were')
-				$("#modal-check").hide(function() {
-					$(".stripe-button-el").trigger('click');
-				});
-			});
 
 			$("#info-icon").click(function() {
 				$("#info-modal").fadeToggle();
@@ -388,6 +341,43 @@
 
 			$("#info-modal").click(function() {
 				$(this).fadeOut();
+			});
+
+			var handler = StripeCheckout.configure({
+				key: 'pk_test_O0FEQP9GGDl3xL8erfEK9LxX',
+				image: 'logo.png',
+				locale: 'auto',
+				token: function(token) {
+					$.ajax({
+						url: '/charge',
+						type: 'POST',
+						data: {
+					    	stripeToken: token.id,
+							site: siteToChange
+					    },
+						// Node is throwing an error when using "res.render" after payment success for some reason. As a workaround, I'll set the redirect on the charge post success.
+						success: function() {
+							window.location = "/confirm";
+						}
+					 });
+				// Use the token to create the charge with a server-side script.
+				// You can access the token ID with `token.id`
+				}
+			});
+
+			$('#customButton').on('click', function(e) {
+				// Open Checkout with further options
+				handler.open({
+					name: 'ChangeThisSite.com',
+					description: '1 site change',
+					amount: 500
+				});
+				e.preventDefault();
+			});
+
+			// Close Checkout on page navigation
+			$(window).on('popstate', function() {
+				handler.close();
 			});
 		});
 	</script>

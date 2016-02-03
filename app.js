@@ -100,7 +100,7 @@ app.post('/test', function(req, eResponse) {
 
 
 		http.get(site, function(response) {
-			//console.log(response)
+			//console.log(response);
 			console.log(response.headers["x-frame-options"]);
 			if (response.headers["x-frame-options"]) {
 				console.log("Not allowed!");
