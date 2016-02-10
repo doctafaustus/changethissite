@@ -141,6 +141,7 @@ app.post('/charge', function(req, res) {
         receipt_email: req.body.email,
 		metadata: {
 			site: req.body.site,
+			referredBy: referrer
 		}
 	}, function(err, charge) {
 		if (err && err.type === 'StripeCardError') {

@@ -422,7 +422,8 @@
 						data: {
 					    	stripeToken: token.id,
 							site: siteToChange,
-                            email: token.email
+                            email: token.email,
+                            referrer: document.referrer
 					    },
 						// Node is throwing an error when using "res.render" after payment success for some reason. As a workaround, I'll set the redirect on the charge post success.
 						success: function() {
