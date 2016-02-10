@@ -16,7 +16,7 @@
 			height: 100%;
 		}
 		header {
-			padding: 15px 21px;
+			padding: 15px 0;
 			overflow: auto;
 			background: url(https://resources1.okadirect.com/assets/img/background/header-bg.png) repeat-x;
 			border-bottom: solid 4px #12A6A4;
@@ -66,12 +66,15 @@
 			background-color: #15bcba;
 		}
 		#info-icon {
-			margin-right: 5px;
-			cursor: pointer
+			float: right;
+			margin-top: 5px;
+			margin-right: 7px;
+			cursor: pointer;
 		}
 		#current-site-title {
+			clear: both;
+			float: right;
 			display: inline-block;
-			margin-top: 19px;
 			margin-bottom: 12px;
 		}
 		#site-history {
@@ -178,6 +181,38 @@
 		#info-modal p {
 			margin: 0;
 		}
+		#email {
+			color: #12A6A4;
+		}
+		#email:hover {
+			text-decoration: none;
+		}
+		.header-section {
+			width: 32%;
+			float: left;
+		}
+		.header-section-right {
+			width: 32%;
+			float: right;
+			padding-right: 2%;
+		}
+		#site-change {
+			clear: both;
+			float: right;
+		}
+		.left {
+			padding-left: 2%;
+		}
+		.middle {
+			text-align: center;
+			margin-top: 20px;
+		}
+		#header-close {
+			float: right;
+		}
+		#header-close img {
+			cursor: pointer;
+		}
 	</style>
     <title>Change This Site</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -197,22 +232,32 @@
 <body>
 <script src="https://checkout.stripe.com/checkout.js"></script>
 	<header>
-		<div id="header-left">
+		<div class="header-section left">
 			<h1 id="logo-text"><a href="/">Change This Site</a><img id="logo" src="logo.png"></h1>
 			<form id="new-site-form" action="/site" method="POST">
 				<input type="text" id="new-site-url" name="site" placeholder="Enter a website!">
 				<input type="submit" id="site-submit" value="Change">
 			</form>
 		</div>
-		<div id="header-right">
+		<div class="header-section middle">
+			You can change this site for $1!
+		</div>
+		<div class="header-section-right">
+			<div id="header-close">
+				<img src="x.jpg">
+			</div>
 			<div id="info-modal">
 				<p>
 					Someone changed this site to <span id="info-modal-site"></span>. To change this site again, enter a URL into the form and click "Change"
 				</p>
+				<br>
+				<p>
+					For comments or questions please email us at <a id="email" href="mailto:info@changethissite.com">info@changethissite.com</a>.<br>
+				</p>
 			</div>
-			<img id="info-icon" src="info.png">
 			<h3 id='current-site-title'></h3>
-            <div>
+			<img id="info-icon" src="info.png">
+            <div id="site-change">
 			    <a href="#" id="site-history">Site Change History</a>
             </div>
 		</div>
@@ -235,7 +280,7 @@
 			<div id="modal-1">
 				<h2>See the change?</h2>
 				<p>
-					You've changed this website! Currently, this change is only visible to you but you can show the rest of the world for $5. Your website will stay up until the next person changes this site!
+					You've changed this website! Currently, this change is only visible to you but you can show the rest of the world for $1. Your website will stay up until the next person changes this site!
 				</p>
 				<button id="submit-site">Show The World!</button>
 			</div>
@@ -394,7 +439,7 @@
 				handler.open({
 					name: 'ChangeThisSite.com',
 					description: '1 site change',
-					amount: 500
+					amount: 100
 				});
 				e.preventDefault();
 			});
@@ -403,6 +448,11 @@
 			$(window).on('popstate', function() {
 				handler.close();
 			});
+
+			// Event handler to hide header
+			$("#header-close img").click(function() {
+				$("header").hide();
+			})
 		});
 	</script>
 </body>
