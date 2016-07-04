@@ -37,7 +37,6 @@ var Site = mongoose.model('Site', new Schema({
 var stripePrivateKey = process.env.PK || "sk_test_M6Kl75IVrABORGexEGZjt740";
 var stripe = require("stripe")(stripePrivateKey);
 
-
 // Globals
 var port = process.env.PORT || 3000;
 
@@ -141,7 +140,7 @@ app.post('/charge', function(req, res) {
         receipt_email: req.body.email,
 		metadata: {
 			site: req.body.site,
-			referredBy: referrer
+			referredBy: req.body.referrer
 		}
 	}, function(err, charge) {
 		if (err && err.type === 'StripeCardError') {
